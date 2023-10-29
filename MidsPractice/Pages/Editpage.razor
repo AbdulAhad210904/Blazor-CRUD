@@ -1,0 +1,12 @@
+﻿@page "/editform/{id:int?}"
+@using MidsPractice.DAL;
+@using MidsPractice.Data;
+<h3>editpage</h3>
+
+@code {
+    [Parameter]
+    public int id { get; set;}
+
+    UserForm um = new();
+
+}

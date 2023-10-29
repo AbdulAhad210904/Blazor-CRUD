@@ -1,0 +1,111 @@
+﻿@page "/formdata"
+@inject NavigationManager NavigationManager
+@using MidsPractice.DAL;
+@using MidsPractice.Data;
+<h3>FormData</h3>
+
+@if (Uform != null)
+{
+	<form>
+		<div class="form-group">
+			<label for="FirstName">First Name</label>
+			<input type="text" class="form-control" id="FirstName" @bind="Uform.FirstName" />
+		</div>
+		<div class="form-group">
+			<label for="LastName">Last Name</label>
+			<input type="text" class="form-control" id="LastName" @bind="Uform.LastName" />
+		</div>
+		<div class="form-group">
+			<label for="Email">Email</label>
+			<input type="text" class="form-control" id="Email" @bind="Uform.Email" />
+		</div>
+		<div class="form-group">
+			<label for="Age">Age</label>
+			<input type="text" class="form-control" id="Age" @bind="Uform.Age" />
+		</div>
+		<div class="form-group">
+			<label for="Country">Country</label>
+			<input type="text" class="form-control" id="Country" @bind="Uform.Country" />
+		</div>
+		<div class="form-group">
+			<label for="Interests">Interests</label>
+			<input type="text" class="form-control" id="Interests" @bind="Uform.Interests" />
+		</div>
+		<div class="form-group">
+			<label for="comments">Comments</label>
+			<textarea class="form-control" id="comments" @bind="Uform.Comments"></textarea>
+		</div>
+
+		<button type="button" class="btn btn-primary" @onclick="UpdateForm">Save</button>
+	</form>
+
+}
+else{
+<table class="table">
+	<thead>
+		<tr>
+			<th>UserID</th>
+			<th>First Name</th>
+			<th>Last Name</th>
+			<th>Email</th>
+			<th>Age</th>
+			<th>Country</th>
+			<th>Interests</th>
+			<th>Comments</th>
+			<th>EDIT</th>
+			<th>Delete</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in formlist)
+		{
+			<tr>
+				<td>@item.UserID</td>
+				<td>@item.FirstName</td>
+				<td>@item.LastName</td>
+				<td>@item.Email</td>
+				<td>@item.Age</td>
+				<td>@item.Country</td>
+				<td>@item.Interests</td>
+				<td>@item.Comments</td>
+					<td><button type="button" @onclick="(async () => await NavigateToUpdateForm(item))" class="btn btn-primary">EDIT</button></td>
+					<td><button type="button" @onclick="(async () => await DeleteForm(item))" class="btn btn-danger">DELETE</button></td>
+
+			@*<td><button type="button" @onclick="(async () => await DeleteCity(item.CityCode))" class="btn btn-danger">Delete</button></td>
+			*@
+				@*<td><button type="button" @onclick="(async () => await ShowConfirmDeleteDialog(item.CityCode))" class="btn btn-danger">Delete</button></td>
+			<td><button type="button" @onclick="(async () => await NavigateToUpdateCity(item))" class="btn btn-primary">Edit</button></td>
+			<td><button type="button" @onclick="(async () => await NavigateToViewpoints(item.pk_CityId))" class="btn btn-primary">Viewpoints</button></td> *@
+
+			</tr>
+		}
+	</tbody>
+</table>
+}
+@code {
+	protected List<UserForm> formlist = new();
+	protected UserForm? Uform;
+	protected override async Task OnInitializedAsync()
+	{
+		await GetData();
+	}
+	protected async Task GetData()
+	{
+		formlist=DALUserForm.GetFormsData();
+	}
+	protected async Task NavigateToUpdateForm(UserForm um)
+	{
+		await Task.Run(() => Uform = um);
+	}
+	protected async Task UpdateForm()
+	{
+		DALUserForm.UpdateForm(Uform);
+		Uform = null;
+	}
+	protected async Task DeleteForm(UserForm um)
+	{
+		DALUserForm.DeleteForm(um);
+		await GetData();
+	}
+
+}

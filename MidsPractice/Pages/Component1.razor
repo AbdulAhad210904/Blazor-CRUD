@@ -1,0 +1,17 @@
+﻿@inject NavigationManager NavigationManager
+
+<h3>Component1</h3>
+<button type="submit" class="btn btn-primary" @onclick="ViewData">View Data</button>
+<button type="submit" class="btn btn-primary" @onclick="FillForm">Fill Form</button>
+
+@code {
+
+    private async Task ViewData()
+    {
+        NavigationManager.NavigateTo("/formdata");
+    }
+    private async Task FillForm()
+    {
+        NavigationManager.NavigateTo("/userform");
+    }
+}
